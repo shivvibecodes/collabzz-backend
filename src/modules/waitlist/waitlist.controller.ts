@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Ip,
+  HttpException,
 } from '@nestjs/common';
 import { WaitlistService } from './waitlist.service';
 import { submitWaitlistSchema } from './dto/submit-waitlist.dto';
@@ -24,6 +25,9 @@ export class WaitlistController {
     } catch (error) {
       if (error instanceof z.ZodError) {
         throw new BadRequestException(error.issues);
+      }
+      if (error instanceof HttpException) {
+        throw error;
       }
       throw new BadRequestException('Validation failed');
     }
