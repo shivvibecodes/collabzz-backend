@@ -17,6 +17,9 @@ export class Contact extends Document {
 
   @Prop({ required: true })
   message: string;
+
+  @Prop({ required: true })
+  ipAddress: string;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);

@@ -11,7 +11,7 @@ export class ContactService {
     private readonly contactModel: Model<Contact>,
   ) {}
 
-  async create(createContactDto: CreateContactDto): Promise<Contact> {
+  async create(createContactDto: CreateContactDto & { ipAddress: string }): Promise<Contact> {
     const createdContact = new this.contactModel(createContactDto);
     return createdContact.save();
   }

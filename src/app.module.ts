@@ -2,15 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Env, validateEnv } from './config/env.schema';
 import { CacheModule } from './modules/cache/cache.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { HealthModule } from './modules/health/health.module';
-import { UploadsModule } from './modules/uploads/uploads.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { EmailModule } from './modules/email/email.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { WaitlistModule } from './modules/waitlist/waitlist.module';
 
 @Module({
   imports: [
@@ -29,14 +26,11 @@ import { ContactModule } from './modules/contact/contact.module';
         },
       ],
     }),
-    EventEmitterModule.forRoot(),
     DatabaseModule,
     CacheModule,
     HealthModule,
-    UploadsModule,
-    AuthModule,
-    EmailModule,
     ContactModule,
+    WaitlistModule,
   ],
   providers: [
     {
