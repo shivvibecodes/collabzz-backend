@@ -25,4 +25,9 @@ export const submitWaitlistSchema = z.discriminatedUnion('type', [
   influencerSchema,
 ]);
 
-export type SubmitWaitlistDto = z.infer<typeof submitWaitlistSchema>;
+export const createContactSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  role: z.enum(['Brand', 'Influencer', 'Investor', 'Press', 'Other']),
+  message: z.string().min(1, 'Message is required'),
+});

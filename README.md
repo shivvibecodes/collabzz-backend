@@ -1,48 +1,38 @@
-# Collabzz Backend
+# Collabzz Backend (Express)
 
-Production-oriented NestJS backend baseline with:
+Production-oriented Express.js backend with:
 
-- NestJS + Fastify
-- MongoDB Atlas (managed)
-- Redis (Docker service)
-- Zod config/input validation
-- Cloudflare R2 signed upload URL flow
-- Health endpoints + request ID tracing + rate limiting
+- Express.js + Node.js
+- MongoDB Atlas (via Mongoose)
+- Zod configuration & input validation
+- Health endpoints + Request ID tracing
+- In-memory rate limiting for contact form
 
 ## Prerequisites
 
 - Node.js 22 LTS
 - pnpm 10+
-- Docker Desktop (for Redis)
 
 ## Setup
 
-1. Install dependencies.
-
+1. Install dependencies:
 ```bash
 pnpm install
 ```
 
-2. Copy `.env.example` to `.env` and fill real secrets and Atlas values.
+2. Copy `.env.example` to `.env` and fill in your values (API_PREFIX, CORS_ORIGIN, MONGODB_URI).
 
-3. Start Redis container.
-
+3. Start development server:
 ```bash
-docker compose up -d redis
-```
-
-4. Start API.
-
-```bash
-pnpm run start:dev
+pnpm run dev
 ```
 
 ## Key Endpoints
 
-- `GET /api/v1/health/live`
-- `GET /api/v1/health/ready`
-- `POST /api/v1/uploads/presign`
-- `GET /api/v1/auth/health`
+- `GET /api/v1/health/live` - Liveness probe
+- `GET /api/v1/health/ready` - Readiness probe (checks DB)
+- `POST /api/v1/waitlist` - Submit waitlist registration
+- `POST /api/v1/contact` - Submit contact form
 
 ## Build and Lint
 
@@ -53,6 +43,6 @@ pnpm run build
 
 ## Notes
 
-- MongoDB is expected from Atlas via `MONGODB_URI`.
-- Redis is local in Docker using persistent volume `redis_collabzz_data`.
-- Request throttling is enabled globally via environment variables.
+- This project was migrated from NestJS to Express for a more streamlined deployment on Render.
+- `API_PREFIX` defaults to `/api/v1`.
+- `CORS_ORIGIN` should be a comma-separated list of allowed origins.

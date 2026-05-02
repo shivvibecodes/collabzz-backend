@@ -1,4 +1,7 @@
 import { z } from 'zod';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const integerFromEnv = z.coerce.number().int();
 
@@ -7,17 +10,16 @@ export const envSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   PORT: integerFromEnv.min(1).max(65535).default(3000),
-  API_PREFIX: z.string().default('api/v1'),
+  API_PREFIX: z.string().default('/api/v1'),
   CORS_ORIGIN: z.string().default('http://localhost:3000'),
-
   MONGODB_URI: z.string().min(1),
-
-  THROTTLE_TTL_SECONDS: integerFromEnv.min(1).default(60),
-  THROTTLE_LIMIT: integerFromEnv.min(1).default(120),
 });
 
-export type Env = z.infer<typeof envSchema>;
+const parsed = envSchema.safeParse(process.env);
 
-export function validateEnv(config: Record<string, unknown>): Env {
-  return envSchema.parse(config);
+if (!parsed.success) {
+  console.error('❌ Invalid environment variables:', parsed.error.format());
+  process.exit(1);
 }
+
+export const env = parsed.data;
